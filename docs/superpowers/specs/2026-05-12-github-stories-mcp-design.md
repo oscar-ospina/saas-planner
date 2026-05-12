@@ -1,203 +1,203 @@
-# Gestión de user stories en GitHub con MCP desde Claude Code
+# Managing User Stories in GitHub via MCP from Claude Code
 
-**Fecha:** 2026-05-12
-**Autor:** brainstorming session con Claude Code
-**Estado:** Aprobado para planificación
+**Date:** 2026-05-12
+**Author:** brainstorming session with Claude Code
+**Status:** Approved for planning
 
-## Contexto y objetivo
+## Context and goal
 
-Configurar un sistema de gestión de user stories que permita trabajar end-to-end desde Claude Code, usando solo herramientas gratuitas. El sistema debe servir a un único desarrollador inicialmente y escalar a un equipo pequeño (2-5 personas) sin migración.
+Set up a user-story management system that can be operated end-to-end from Claude Code, using only free tooling. The system must serve a single developer initially and scale to a small team (2-5 people) without migration.
 
-**Decisiones previas (brainstorm):**
+**Decisions from brainstorm:**
 
-- Plataforma: GitHub (Issues + Projects v2) — el usuario ya vive en GitHub
-- Jerarquía: 2 niveles (Epic → Story) usando sub-issues nativos
-- Uso de MCP: bidireccional (crear stories durante brainstorm + leer/actualizar al implementar)
+- Platform: GitHub (Issues + Projects v2) — the user already lives in GitHub
+- Hierarchy: 2 levels (Epic → Story) using native sub-issues
+- MCP usage: bidirectional (create stories during brainstorm + read/update while implementing)
 
-## Arquitectura
+## Architecture
 
 ```
 Claude Code ←→ GitHub MCP ←→ GitHub API ←→ Repo + Project v2
 ```
 
-**Componentes:**
+**Components:**
 
-1. **Repo GitHub** — código + plantillas de issues
-2. **GitHub Project v2** — board con vistas (Backlog, Sprint, Roadmap) y campos custom
-3. **Issue templates** — `epic.yml` y `story.yml` con AC en formato Given/When/Then
-4. **GitHub MCP server oficial** — instalado en Claude Code, autenticado con PAT fine-grained
-5. **Convención de labels** — `epic`, `story`, `bug`, `priority:*`, `status:*`
+1. **GitHub repo** — code + issue templates
+2. **GitHub Project v2** — board with views (Backlog, Sprint, Roadmap) and custom fields
+3. **Issue templates** — `epic.yml` and `story.yml`, acceptance criteria in Given/When/Then
+4. **Official GitHub MCP server** — installed in Claude Code, authenticated with a fine-grained PAT
+5. **Label conventions** — `epic`, `story`, `bug`, `priority:*`, `status:*`
 
-**Por qué GitHub vs alternativas (Linear, Notion):** evita duplicar mundos (código vs stories), tier gratis sin límite de issues, escala sin migración cuando llegue el equipo.
+**Why GitHub vs alternatives (Linear, Notion):** avoids splitting the world between code and stories, the free tier has no issue cap, and it scales without migration when the team grows.
 
-## Setup del repo
+## Repo setup
 
-- **Nombre:** a definir antes de implementación (placeholder: `<repo-name>`)
-- **Visibilidad:** privado al inicio
-- **Inicialización:** README, `.gitignore`, LICENSE, carpeta `.github/ISSUE_TEMPLATE/`
+- **Name:** to be defined before implementation (placeholder: `<repo-name>`)
+- **Visibility:** private at start
+- **Initialization:** README, `.gitignore`, LICENSE, `.github/ISSUE_TEMPLATE/` directory
 
-## Setup del Project v2
+## Project v2 setup
 
-- **Vista default:** Board (Kanban)
-- **Vistas adicionales:**
-  - Backlog (tabla, filtra `status:ready`, ordena por priority)
-  - Sprint actual (board, agrupa por status)
-  - Roadmap (timeline, opcional)
-- **Campos custom:**
+- **Default view:** Board (Kanban)
+- **Additional views:**
+  - Backlog (table, filters `status:ready`, sorted by priority)
+  - Current Sprint (board, grouped by status)
+  - Roadmap (timeline, optional)
+- **Custom fields:**
   - `Priority` — single-select: high / med / low
-  - `Story Points` — number, escala Fibonacci (1/2/3/5/8)
-  - `Sprint` — iteration field, ciclos de 2 semanas (default; ajustable)
+  - `Story Points` — number, Fibonacci scale (1/2/3/5/8)
+  - `Sprint` — iteration field, 2-week cycles (default; adjustable)
   - `Type` — single-select: epic / story / bug / spike
-- **Sub-issues:** activados (feature nativa GitHub 2024+)
+- **Sub-issues:** enabled (native GitHub feature, 2024+)
 
-## Plantillas de issues
+## Issue templates
 
 ### `.github/ISSUE_TEMPLATE/epic.yml`
 
 ```yaml
 name: Epic
-description: Iniciativa grande que agrupa varias stories
+description: Large initiative grouping multiple stories
 title: "[Epic] "
 labels: ["epic"]
 body:
   - type: textarea
     id: goal
     attributes:
-      label: Objetivo
-      description: Qué problema resuelve, para quién, por qué importa
+      label: Goal
+      description: What problem it solves, for whom, why it matters
     validations: { required: true }
   - type: textarea
     id: success
     attributes:
-      label: Criterios de éxito
-      description: Cómo sabemos que la épica está completa (métricas o entregables)
+      label: Success criteria
+      description: How we know the epic is complete (metrics or deliverables)
     validations: { required: true }
   - type: textarea
     id: stories
     attributes:
-      label: Stories planeadas
-      description: Lista inicial (se convertirán en sub-issues)
+      label: Planned stories
+      description: Initial list (will become sub-issues)
 ```
 
 ### `.github/ISSUE_TEMPLATE/story.yml`
 
 ```yaml
 name: User Story
-description: Historia accionable, implementable en 1 sprint
+description: Actionable story, implementable within one sprint
 title: "[Story] "
 labels: ["story"]
 body:
   - type: textarea
     id: story
     attributes:
-      label: Historia
-      description: "Como [rol], quiero [acción], para [beneficio]"
+      label: Story
+      description: "As a [role], I want [action], so that [benefit]"
     validations: { required: true }
   - type: textarea
     id: ac
     attributes:
-      label: Criterios de aceptación
+      label: Acceptance criteria
       description: |
-        Formato Given/When/Then:
-        - Given [contexto], When [acción], Then [resultado esperado]
+        Given/When/Then format:
+        - Given [context], When [action], Then [expected result]
     validations: { required: true }
   - type: textarea
     id: notes
     attributes:
-      label: Notas técnicas
-      description: Constraints, dependencias, decisiones
+      label: Technical notes
+      description: Constraints, dependencies, decisions
   - type: input
     id: epic
     attributes:
-      label: Epic padre (opcional)
-      description: "#número o URL del epic"
+      label: Parent epic (optional)
+      description: "#number or epic URL"
 ```
 
-**Por qué Given/When/Then:** estructurado, testeable, Claude puede generar tests directamente desde los AC.
+**Why Given/When/Then:** structured, testable, and Claude can generate tests directly from the AC.
 
-## Setup del MCP
+## MCP setup
 
 ```bash
-# 1. Crear PAT fine-grained en github.com/settings/personal-access-tokens
-#    Permisos requeridos:
+# 1. Create a fine-grained PAT at github.com/settings/personal-access-tokens
+#    Required permissions:
 #      - Issues (Read & Write)
 #      - Pull requests (Read & Write)
 #      - Contents (Read & Write)
 #      - Projects (Read & Write)
 #      - Metadata (Read)
 
-# 2. Agregar MCP a Claude Code
+# 2. Add the MCP to Claude Code
 claude mcp add github -- npx -y @modelcontextprotocol/server-github
-# Configurar variable: GITHUB_PERSONAL_ACCESS_TOKEN=<tu-pat>
+# Set environment variable: GITHUB_PERSONAL_ACCESS_TOKEN=<your-pat>
 ```
 
-## Workflows desde Claude Code
+## Workflows from Claude Code
 
-### A) Crear story durante brainstorm
-
-```
-Usuario: "Vamos a brainstorm una feature de login con Google"
-Claude:  [conversación brainstorming]
-         [propone story con AC]
-         [crea issue via MCP usando template story.yml]
-         → devuelve link al issue
-```
-
-### B) Implementar story asignada
+### A) Create a story during brainstorm
 
 ```
-Usuario: "Trabajemos en #42"
-Claude:  [lee issue #42 via MCP]
-         [lee AC y notas técnicas]
-         [implementa]
-         [actualiza status a in-progress al empezar]
-         [abre PR linkeado al issue con "Closes #42"]
+User:   "Let's brainstorm a Google login feature"
+Claude: [brainstorming conversation]
+        [proposes story with AC]
+        [creates issue via MCP using story.yml template]
+        → returns issue link
 ```
 
-### C) Planificación de Epic
+### B) Implement an assigned story
 
 ```
-Usuario: "Necesito una épica para sistema de notificaciones"
-Claude:  [crea epic via MCP]
-         [propone 4-6 stories sub-issues]
-         [tras OK del usuario, crea las sub-issues]
-         [agrega al Project en columna Backlog]
+User:   "Let's work on #42"
+Claude: [reads issue #42 via MCP]
+        [reads AC and technical notes]
+        [implements]
+        [updates status to in-progress when starting]
+        [opens PR linked to the issue with "Closes #42"]
 ```
 
-**Convención de commits/PRs:** `feat: <título story> (#42)`. El linkeo `Closes #N` cierra el issue al merge automáticamente.
+### C) Epic planning
 
-## Validación post-setup
+```
+User:   "I need an epic for a notification system"
+Claude: [creates epic via MCP]
+        [proposes 4-6 sub-issue stories]
+        [after user approval, creates the sub-issues]
+        [adds them to the Project Backlog column]
+```
 
-Test manual en orden, sin intervención fuera de lo descrito:
+**Commit/PR convention:** `feat: <story title> (#42)`. The `Closes #N` link auto-closes the issue on merge.
 
-1. **MCP responde:** pedir a Claude `lista mis repos`. Debe devolver lista → MCP+PAT OK
-2. **Templates cargan:** ir a `github.com/<user>/<repo>/issues/new/choose` → ver "Epic" y "User Story"
-3. **Crear epic vía MCP:** Claude crea epic de prueba. Verificar label correcto y campos del Project en UI
-4. **Crear story con sub-issue:** Claude crea story bajo el epic. Verificar relación parent/child en UI
-5. **Cerrar via PR:** branch + commit `Closes #N` + PR + merge. Issue se cierra solo y se mueve a "Done"
-6. **Limpieza:** borrar issues de prueba
+## Post-setup validation
 
-**Criterio de éxito:** los 6 pasos completan sin error.
+Manual test in order, no intervention beyond what is described:
 
-## Riesgos conocidos
+1. **MCP responds:** ask Claude `list my repos`. Must return a list → MCP+PAT OK
+2. **Templates load:** open `github.com/<user>/<repo>/issues/new/choose` → see "Epic" and "User Story"
+3. **Create epic via MCP:** Claude creates a test epic. Verify correct label and Project fields in the UI
+4. **Create story with sub-issue:** Claude creates a story under the epic. Verify parent/child relationship in the UI
+5. **Close via PR:** branch + commit `Closes #N` + PR + merge. Issue closes automatically and moves to "Done"
+6. **Cleanup:** delete test issues
 
-- **PAT expira** (fine-grained máx 1 año) → poner recordatorio en calendario para rotación
-- **Rate limit GitHub API** — 5000 req/h con PAT. Suficiente para uso solo; revisar si llega equipo
-- **Sub-issues feature relativamente nueva** — si la UI/API cambia, ajustar templates y workflow
+**Success criterion:** all 6 steps complete without errors.
 
-## Fuera de alcance (YAGNI)
+## Known risks
 
-Lo siguiente queda explícitamente fuera y se considerará en futuros specs si surge necesidad real:
+- **PAT expiration** (fine-grained max 1 year) → set a calendar reminder for rotation
+- **GitHub API rate limit** — 5000 req/h with PAT. Sufficient for solo use; revisit when team grows
+- **Sub-issues is a relatively new feature** — if UI/API changes, adjust templates and workflow
 
-- Automatización de CI/CD (GitHub Actions más allá de las default)
-- Integración con herramientas externas (Slack, Discord, email)
-- Dashboards de métricas/velocity
+## Out of scope (YAGNI)
+
+The following is explicitly out of scope and will be considered in future specs only if real need arises:
+
+- CI/CD automation (GitHub Actions beyond defaults)
+- External integrations (Slack, Discord, email)
+- Metrics/velocity dashboards
 - Multi-repo / monorepo
-- Roles y permisos finos en el Project (escalable luego al invitar equipo)
+- Fine-grained Project roles and permissions (deferred until team is invited)
 
-## Decisiones pendientes para fase de planificación
+## Open decisions for the planning phase
 
-- Nombre real del repo
-- Duración de sprint (1 vs 2 semanas)
+- Real repo name
+- Sprint length (1 vs 2 weeks)
 - Story points vs t-shirt sizes (XS/S/M/L)
-- Visibilidad final del repo (privado fijo, o flip a público en algún criterio)
+- Final repo visibility (stay private, or flip to public under some criterion)
