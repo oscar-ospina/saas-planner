@@ -9,7 +9,7 @@
 **Tech Stack:** GitHub (Issues, Projects v2, Labels, sub-issues), `gh` CLI (≥ 2.40.0 required for Project v2 commands), Docker (runs `ghcr.io/github/github-mcp-server`), Claude Code MCP support.
 
 **Repo target:** `oscar-ospina/saas-planner` (public)
-**Local working dir:** `/home/oospina/code/saas`
+**Local working dir:** `/home/oospina/code/saas/saas-planner`
 
 ---
 
@@ -93,9 +93,9 @@ Expected: `Logged in to github.com as oscar-ospina`. If not, run `gh auth login`
 ## Task 2: Add baseline repo files
 
 **Files:**
-- Create: `/home/oospina/code/saas/README.md`
-- Create: `/home/oospina/code/saas/.gitignore`
-- Create: `/home/oospina/code/saas/LICENSE`
+- Create: `/home/oospina/code/saas/saas-planner/README.md`
+- Create: `/home/oospina/code/saas/saas-planner/.gitignore`
+- Create: `/home/oospina/code/saas/saas-planner/LICENSE`
 
 - [ ] **Step 1: Create `README.md`**
 
@@ -205,7 +205,7 @@ Run:
 gh repo create oscar-ospina/saas-planner \
   --public \
   --description "User-story planning workspace, managed from Claude Code via GitHub MCP" \
-  --source=/home/oospina/code/saas \
+  --source=/home/oospina/code/saas/saas-planner \
   --remote=origin
 ```
 Expected: output `https://github.com/oscar-ospina/saas-planner` and a new `origin` remote configured locally.
@@ -234,7 +234,7 @@ Expected: JSON containing `"name":"saas-planner"`, `"visibility":"PUBLIC"`, and 
 
 - [ ] **Step 1: Create the nine labels**
 
-Run (one block, in `/home/oospina/code/saas`):
+Run (one block, in `/home/oospina/code/saas/saas-planner`):
 ```bash
 gh label create "epic"            --repo oscar-ospina/saas-planner --color 8B4FBC --description "Large initiative grouping multiple stories"
 gh label create "story"           --repo oscar-ospina/saas-planner --color 0E8A16 --description "User story, implementable in one sprint"
@@ -262,15 +262,15 @@ Expected: list contains `epic`, `story`, `bug`, `spike`, `priority:high`, `prior
 ## Task 5: Add issue templates
 
 **Files:**
-- Create: `/home/oospina/code/saas/.github/ISSUE_TEMPLATE/epic.yml`
-- Create: `/home/oospina/code/saas/.github/ISSUE_TEMPLATE/story.yml`
-- Create: `/home/oospina/code/saas/.github/ISSUE_TEMPLATE/config.yml`
+- Create: `/home/oospina/code/saas/saas-planner/.github/ISSUE_TEMPLATE/epic.yml`
+- Create: `/home/oospina/code/saas/saas-planner/.github/ISSUE_TEMPLATE/story.yml`
+- Create: `/home/oospina/code/saas/saas-planner/.github/ISSUE_TEMPLATE/config.yml`
 
 - [ ] **Step 1: Create the directory**
 
 Run:
 ```bash
-mkdir -p /home/oospina/code/saas/.github/ISSUE_TEMPLATE
+mkdir -p /home/oospina/code/saas/saas-planner/.github/ISSUE_TEMPLATE
 ```
 Expected: directory exists, no output.
 
@@ -353,7 +353,7 @@ contact_links: []
 
 Run:
 ```bash
-python3 -c "import yaml,glob; [yaml.safe_load(open(p)) for p in glob.glob('/home/oospina/code/saas/.github/ISSUE_TEMPLATE/*.yml')]; print('OK')"
+python3 -c "import yaml,glob; [yaml.safe_load(open(p)) for p in glob.glob('/home/oospina/code/saas/saas-planner/.github/ISSUE_TEMPLATE/*.yml')]; print('OK')"
 ```
 Expected: `OK`. If a `yaml` import error appears, install: `sudo apt install python3-yaml -y`.
 
@@ -570,7 +570,7 @@ Expected: `github` listed with status `connected` (or similar healthy state).
 
 - [ ] **Step 4: Restart Claude Code so the new MCP loads**
 
-Exit the current Claude Code session (Ctrl-C twice or `/exit`) and re-launch with `claude` in `/home/oospina/code/saas`. New tools prefixed `mcp__github__*` should now be available.
+Exit the current Claude Code session (Ctrl-C twice or `/exit`) and re-launch with `claude` in `/home/oospina/code/saas/saas-planner`. New tools prefixed `mcp__github__*` should now be available.
 
 ---
 
