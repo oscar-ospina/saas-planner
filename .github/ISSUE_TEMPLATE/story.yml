@@ -1,0 +1,31 @@
+name: User Story
+description: Actionable story, implementable within one sprint
+title: "[Story] "
+labels: ["story"]
+body:
+  - type: textarea
+    id: story
+    attributes:
+      label: Story
+      description: "As a [role], I want [action], so that [benefit]"
+    validations:
+      required: true
+  - type: textarea
+    id: ac
+    attributes:
+      label: Acceptance criteria
+      description: |
+        Given/When/Then format:
+        - Given [context], When [action], Then [expected result]
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Technical notes
+      description: Constraints, dependencies, decisions
+  - type: input
+    id: epic
+    attributes:
+      label: Parent epic (optional)
+      description: "#number or epic URL"

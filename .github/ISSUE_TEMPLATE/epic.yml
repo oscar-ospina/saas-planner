@@ -1,0 +1,24 @@
+name: Epic
+description: Large initiative grouping multiple stories
+title: "[Epic] "
+labels: ["epic"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What problem it solves, for whom, why it matters
+    validations:
+      required: true
+  - type: textarea
+    id: success
+    attributes:
+      label: Success criteria
+      description: How we know the epic is complete (metrics or deliverables)
+    validations:
+      required: true
+  - type: textarea
+    id: stories
+    attributes:
+      label: Planned stories
+      description: Initial list (will become sub-issues)
