@@ -533,7 +533,13 @@ Expected: JSON beginning with `"id":` and `"name": "saas-planner"`. If the respo
 
 ---
 
-## Task 8: Install the GitHub MCP server in Claude Code
+## Task 8: Install the GitHub MCP server in Claude Code — SKIPPED
+
+**Status:** Skipped during execution (2026-05-12). The `gh` CLI already covered the workflow during Tasks 1-6, and a mid-execution trade-off review concluded the MCP's marginal benefits did not justify its operational cost (Docker daemon, separate PAT to rotate, ~1s cold-start per call, the official MCP does not cover Projects v2 management).
+
+The fine-grained PAT created in Task 7 and the `~/.config/saas-planner-mcp.env` file are kept dormant in case the decision is revisited.
+
+The original install steps below are preserved for reference.
 
 Use GitHub's official Docker image `ghcr.io/github/github-mcp-server`. Docker is already installed on this machine.
 
@@ -574,40 +580,74 @@ Exit the current Claude Code session (Ctrl-C twice or `/exit`) and re-launch wit
 
 ---
 
-## Task 9: End-to-end validation
+## Task 9: End-to-end validation (adapted to `gh` CLI)
 
-Walks the six checks from the spec's "Post-setup validation" section. All steps are run from inside Claude Code (after the restart in Task 8).
+The spec's six-step validation is adapted to use `gh` instead of MCP tool calls, since Task 8 was skipped.
 
 **Files:** none (tests only).
 
-- [ ] **Step 1: MCP responds**
+- [ ] **Step 1: `gh` is authenticated**
 
-In the Claude Code prompt, ask:
+Run:
+```bash
+gh repo list oscar-ospina --limit 10
 ```
-List my GitHub repos.
-```
-Expected: Claude calls a `mcp__github__*` tool and returns at least `oscar-ospina/saas-planner`.
+Expected: list contains `oscar-ospina/saas-planner`.
 
 - [ ] **Step 2: Templates load**
 
 Open `https://github.com/oscar-ospina/saas-planner/issues/new/choose` in a browser.
 Expected: **Epic** and **User Story** cards are visible; no blank-issue option.
 
-- [ ] **Step 3: Create a test epic via the MCP**
+- [ ] **Step 3: Create a test epic via `gh`**
 
-In Claude Code:
-```
-Create an epic in oscar-ospina/saas-planner titled "Validation epic — delete me", with goal "Validate the MCP setup", success criteria "All tasks of plan 2026-05-12-github-stories-mcp.md complete", and one planned story "Test sub-issue".
-```
-Expected: an issue is created with the `epic` label and shows up in the project board with `Type=epic`.
+Run:
+```bash
+gh issue create --repo oscar-ospina/saas-planner \
+  --title "[Epic] Validation epic — delete me" \
+  --label epic \
+  --body "$(cat <<'EOF'
+### Goal
+Validate the gh-based workflow end-to-end.
 
-- [ ] **Step 4: Create a sub-issue story**
+### Success criteria
+All steps of Task 9 complete without manual intervention.
 
-In Claude Code:
+### Planned stories
+- Test sub-issue
+EOF
+)"
 ```
-Create a User Story sub-issue under the validation epic, titled "Validation story — delete me", with story "As a developer, I want to verify sub-issues, so that I trust the workflow", AC "Given the parent epic exists, When I create the story, Then the story shows as a sub-issue of the epic".
+Expected: prints the new issue URL (record the number as `<epic-number>`). The issue should auto-add to the Project; if it does not, add manually with `gh project item-add 1 --owner oscar-ospina --url <url>`.
+
+- [ ] **Step 4: Create a sub-issue story via `gh` and link it to the epic**
+
+Run (replace `<epic-number>`):
+```bash
+STORY_URL=$(gh issue create --repo oscar-ospina/saas-planner \
+  --title "[Story] Validation story — delete me" \
+  --label story \
+  --body "$(cat <<EOF
+### Story
+As a developer, I want to verify sub-issues, so that I trust the workflow.
+
+### Acceptance criteria
+- Given the parent epic exists, When I create the story, Then the story shows as a sub-issue of the epic.
+
+### Parent epic
+#<epic-number>
+EOF
+)")
+echo "$STORY_URL"
 ```
-Expected: a second issue is created and the GitHub UI shows it nested under the epic in the **Sub-issues** section.
+Expected: prints the story URL (record as `<story-number>`).
+
+Link as a sub-issue (REST endpoint, requires `gh` ≥ 2.49 — already installed):
+```bash
+gh api -X POST /repos/oscar-ospina/saas-planner/issues/<epic-number>/sub_issues \
+  -f sub_issue_id="$(gh api /repos/oscar-ospina/saas-planner/issues/<story-number> --jq .id)"
+```
+Expected: returns JSON with the sub-issue relationship; the GitHub UI shows the story nested under the epic in the **Sub-issues** section.
 
 - [ ] **Step 5: Close via PR**
 
