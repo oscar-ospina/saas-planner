@@ -1,6 +1,10 @@
 # Working in this repo with Claude Code
 
-This repo is the planning and tracking workspace for the `saas-planner` project. All issues, sub-issues, projects, PRs, and labels are managed on GitHub.
+This repo is the **planning workspace** for the SaaS product. It holds specs, plans, issues, and the Project v2 board — **no application code lives here**. Product code lives in sibling repositories under `~/code/saas/` (for example `web/`, `api/`), and their stories are tracked here through this repo's issues and Project.
+
+If a task asks you to write product code, the work belongs in the relevant sibling repo, not here. Use this repo to read or update the corresponding story (Epic / User Story issue), and reference the issue number from the sibling repo's commits and PRs.
+
+All issues, sub-issues, projects, PRs, and labels for planning are managed on GitHub.
 
 ## GitHub tooling: use `gh` CLI
 
@@ -55,14 +59,16 @@ EOF
 
 Then link it as a sub-issue of the parent epic using GitHub's sub-issues UI or `gh api graphql`.
 
-### Implement a story
+### Implement a story (work happens in a sibling repo)
 
 ```bash
-gh issue view <number> --repo oscar-ospina/saas-planner
+gh issue view <number> --repo oscar-ospina/saas-planner   # read AC and notes
+cd ~/code/saas/<sibling-repo>                              # switch to the code repo
 git checkout -b story/<short-slug>
 # implement
-git commit -m "feat: <story title> (#<number>)"
-gh pr create --repo oscar-ospina/saas-planner --base main --body "Closes #<number>"
+git commit -m "feat: <story title> (oscar-ospina/saas-planner#<number>)"
+gh pr create --repo oscar-ospina/<sibling-repo> --base main \
+  --body "Closes oscar-ospina/saas-planner#<number>"
 ```
 
-The PR auto-closes the issue on merge to `main`.
+Cross-repo `Closes oscar-ospina/saas-planner#<N>` in the sibling-repo PR body auto-closes the planning issue on merge.

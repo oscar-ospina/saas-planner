@@ -1,27 +1,12 @@
-# Node
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-.pnpm-debug.log*
-
-# Build outputs
-dist/
-build/
-.next/
-.turbo/
-out/
-
-# Env
-.env
-.env.local
-.env.*.local
-
 # Editor
 .vscode/
 .idea/
 *.swp
 .DS_Store
 
+# Local secrets / env (in case any tooling lands here later)
+.env
+.env.local
+
 # Logs
 *.log
-logs/

@@ -1,6 +1,6 @@
 # saas-planner
 
-Planning and tracking workspace for a SaaS project, managed end-to-end from Claude Code via the GitHub MCP server.
+Planning workspace for the SaaS product. **No application code lives here** — this repo only holds specs, plans, issues, and the Project v2 board. Product code is implemented in sibling repositories under `~/code/saas/` (e.g. `web/`, `api/`), and their stories are tracked here.
 
 ## Documentation
 
