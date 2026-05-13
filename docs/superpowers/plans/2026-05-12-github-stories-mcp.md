@@ -44,7 +44,7 @@ The system has `gh 2.4.0` (2022); Project v2 subcommands need ≥ 2.40.0. Upgrad
 
 **Files:** none (system package).
 
-- [ ] **Step 1: Confirm current version is too old**
+- [x] **Step 1: Confirm current version is too old**
 
 Run:
 ```bash
@@ -52,7 +52,7 @@ gh --version
 ```
 Expected: `gh version 2.4.0` (or any version below 2.40.0). If the version is already ≥ 2.40.0, skip the rest of Task 1 and continue at Task 2.
 
-- [ ] **Step 2: Add the GitHub CLI apt repository and key**
+- [x] **Step 2: Add the GitHub CLI apt repository and key**
 
 Run:
 ```bash
@@ -63,7 +63,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githu
 ```
 Expected: lines added to `sources.list.d/github-cli.list` with no error.
 
-- [ ] **Step 3: Install the latest `gh`**
+- [x] **Step 3: Install the latest `gh`**
 
 Run:
 ```bash
@@ -72,7 +72,7 @@ sudo apt install gh -y
 ```
 Expected: apt reports `gh` is upgraded; final line of `apt install` shows the new version.
 
-- [ ] **Step 4: Verify version**
+- [x] **Step 4: Verify version**
 
 Run:
 ```bash
@@ -80,7 +80,7 @@ gh --version
 ```
 Expected: version ≥ 2.40.0.
 
-- [ ] **Step 5: Reconfirm authentication survived the upgrade**
+- [x] **Step 5: Reconfirm authentication survived the upgrade**
 
 Run:
 ```bash
@@ -97,7 +97,7 @@ Expected: `Logged in to github.com as oscar-ospina`. If not, run `gh auth login`
 - Create: `/home/oospina/code/saas/saas-planner/.gitignore`
 - Create: `/home/oospina/code/saas/saas-planner/LICENSE`
 
-- [ ] **Step 1: Create `README.md`**
+- [x] **Step 1: Create `README.md`**
 
 Content:
 ```markdown
@@ -115,7 +115,7 @@ Planning and tracking workspace for a SaaS project, managed end-to-end from Clau
 Open a new issue at [`/issues/new/choose`](../../issues/new/choose) and pick **Epic** or **User Story**.
 ```
 
-- [ ] **Step 2: Create `.gitignore`**
+- [x] **Step 2: Create `.gitignore`**
 
 Content (covers common ecosystems; trim once the real tech stack is picked):
 ```
@@ -148,7 +148,7 @@ out/
 logs/
 ```
 
-- [ ] **Step 3: Create `LICENSE` (MIT, year 2026, owner Oscar Ospina)**
+- [x] **Step 3: Create `LICENSE` (MIT, year 2026, owner Oscar Ospina)**
 
 Content:
 ```
@@ -175,7 +175,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-- [ ] **Step 4: Verify the files exist**
+- [x] **Step 4: Verify the files exist**
 
 Run:
 ```bash
@@ -183,7 +183,7 @@ ls -la README.md .gitignore LICENSE
 ```
 Expected: all three files listed with non-zero size.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 Run:
 ```bash
@@ -198,7 +198,7 @@ Expected: commit created, three files reported as added.
 
 **Files:** none (remote state).
 
-- [ ] **Step 1: Create the public repo from the existing local directory**
+- [x] **Step 1: Create the public repo from the existing local directory**
 
 Run:
 ```bash
@@ -210,7 +210,7 @@ gh repo create oscar-ospina/saas-planner \
 ```
 Expected: output `https://github.com/oscar-ospina/saas-planner` and a new `origin` remote configured locally.
 
-- [ ] **Step 2: Push the existing history to `origin/main`**
+- [x] **Step 2: Push the existing history to `origin/main`**
 
 Run:
 ```bash
@@ -218,7 +218,7 @@ git push -u origin main
 ```
 Expected: push succeeds; `main` set to track `origin/main`.
 
-- [ ] **Step 3: Verify the repo is reachable**
+- [x] **Step 3: Verify the repo is reachable**
 
 Run:
 ```bash
@@ -232,7 +232,7 @@ Expected: JSON containing `"name":"saas-planner"`, `"visibility":"PUBLIC"`, and 
 
 **Files:** none (remote state).
 
-- [ ] **Step 1: Create the nine labels**
+- [x] **Step 1: Create the nine labels**
 
 Run (one block, in `/home/oospina/code/saas/saas-planner`):
 ```bash
@@ -249,7 +249,7 @@ gh label create "status:review"   --repo oscar-ospina/saas-planner --color C5DEF
 ```
 Expected: each line prints the label name. If any label already exists, the command errors `already exists` — that is acceptable, continue with the rest.
 
-- [ ] **Step 2: Verify all labels are present**
+- [x] **Step 2: Verify all labels are present**
 
 Run:
 ```bash
@@ -266,7 +266,7 @@ Expected: list contains `epic`, `story`, `bug`, `spike`, `priority:high`, `prior
 - Create: `/home/oospina/code/saas/saas-planner/.github/ISSUE_TEMPLATE/story.yml`
 - Create: `/home/oospina/code/saas/saas-planner/.github/ISSUE_TEMPLATE/config.yml`
 
-- [ ] **Step 1: Create the directory**
+- [x] **Step 1: Create the directory**
 
 Run:
 ```bash
@@ -274,7 +274,7 @@ mkdir -p /home/oospina/code/saas/saas-planner/.github/ISSUE_TEMPLATE
 ```
 Expected: directory exists, no output.
 
-- [ ] **Step 2: Create `epic.yml`**
+- [x] **Step 2: Create `epic.yml`**
 
 Content:
 ```yaml
@@ -304,7 +304,7 @@ body:
       description: Initial list (will become sub-issues)
 ```
 
-- [ ] **Step 3: Create `story.yml`**
+- [x] **Step 3: Create `story.yml`**
 
 Content:
 ```yaml
@@ -341,7 +341,7 @@ body:
       description: "#number or epic URL"
 ```
 
-- [ ] **Step 4: Create `config.yml`**
+- [x] **Step 4: Create `config.yml`**
 
 Content:
 ```yaml
@@ -349,7 +349,7 @@ blank_issues_enabled: false
 contact_links: []
 ```
 
-- [ ] **Step 5: Verify YAML syntax**
+- [x] **Step 5: Verify YAML syntax**
 
 Run:
 ```bash
@@ -357,7 +357,7 @@ python3 -c "import yaml,glob; [yaml.safe_load(open(p)) for p in glob.glob('/home
 ```
 Expected: `OK`. If a `yaml` import error appears, install: `sudo apt install python3-yaml -y`.
 
-- [ ] **Step 6: Commit and push**
+- [x] **Step 6: Commit and push**
 
 Run:
 ```bash
@@ -367,7 +367,7 @@ git push origin main
 ```
 Expected: push succeeds.
 
-- [ ] **Step 7: Verify templates show in the GitHub UI**
+- [x] **Step 7: Verify templates show in the GitHub UI**
 
 Open in a browser: `https://github.com/oscar-ospina/saas-planner/issues/new/choose`
 Expected: two cards visible — **Epic** and **User Story** — and no "Open a blank issue" link at the bottom.
@@ -380,7 +380,7 @@ The project is owned by the user (not the repo) so the same project can host iss
 
 **Files:** none (remote state).
 
-- [ ] **Step 1: Create the project**
+- [x] **Step 1: Create the project**
 
 Run:
 ```bash
@@ -388,7 +388,7 @@ gh project create --owner oscar-ospina --title "Saas Planner Roadmap" --format j
 ```
 Expected: JSON output containing `"number": <N>` and `"url": "https://github.com/users/oscar-ospina/projects/<N>"`. **Record `<N>` — it is reused in every subsequent step.**
 
-- [ ] **Step 2: Add the `Priority` single-select field**
+- [x] **Step 2: Add the `Priority` single-select field**
 
 Run (replace `<N>` with the project number from Step 1):
 ```bash
@@ -396,7 +396,7 @@ gh project field-create <N> --owner oscar-ospina --name "Priority" --data-type S
 ```
 Expected: JSON describing the new field, including its `id`.
 
-- [ ] **Step 3: Add the `Size` single-select field (T-shirt sizes)**
+- [x] **Step 3: Add the `Size` single-select field (T-shirt sizes)**
 
 Run:
 ```bash
@@ -404,7 +404,7 @@ gh project field-create <N> --owner oscar-ospina --name "Size" --data-type SINGL
 ```
 Expected: JSON describing the new field.
 
-- [ ] **Step 4: Add the `Type` single-select field**
+- [x] **Step 4: Add the `Type` single-select field**
 
 Run:
 ```bash
@@ -412,7 +412,7 @@ gh project field-create <N> --owner oscar-ospina --name "Type" --data-type SINGL
 ```
 Expected: JSON describing the new field.
 
-- [ ] **Step 5: Verify the three custom fields exist**
+- [x] **Step 5: Verify the three custom fields exist**
 
 Run:
 ```bash
@@ -420,13 +420,13 @@ gh project field-list <N> --owner oscar-ospina
 ```
 Expected: list contains `Priority`, `Size`, `Type` plus the built-in `Title`, `Assignees`, `Status`, `Labels`, `Linked pull requests`, `Milestone`, `Repository`, `Reviewers`.
 
-- [ ] **Step 6: Add the `Sprint` iteration field via the UI**
+- [x] **Step 6: Add the `Sprint` iteration field via the UI**
 
 Open `https://github.com/users/oscar-ospina/projects/<N>/settings/fields`.
 Click **New field** → name it `Sprint` → type **Iteration** → duration `2 weeks` → starts on next Monday → save.
 Expected: `Sprint` appears in the field list with the first iteration auto-created.
 
-- [ ] **Step 7: Create the three views via the UI**
+- [x] **Step 7: Create the three views via the UI**
 
 Open `https://github.com/users/oscar-ospina/projects/<N>`.
 
@@ -447,13 +447,13 @@ Open `https://github.com/users/oscar-ospina/projects/<N>`.
 
 Expected: three custom view tabs visible in the project header.
 
-- [ ] **Step 8: Link the repo to the project so new issues auto-add**
+- [x] **Step 8: Link the repo to the project so new issues auto-add**
 
 Open `https://github.com/users/oscar-ospina/projects/<N>/workflows`.
 Enable the built-in workflow **Auto-add to project** → set filter to `repo:oscar-ospina/saas-planner is:issue,pr`.
 Expected: workflow toggled on, status reads `Enabled`.
 
-- [ ] **Step 9: Smoke-test the auto-add**
+- [x] **Step 9: Smoke-test the auto-add**
 
 Run:
 ```bash
@@ -463,7 +463,7 @@ Expected: issue is created and prints its URL.
 
 Open `https://github.com/users/oscar-ospina/projects/<N>` and verify the smoke-test issue appears in the table.
 
-- [ ] **Step 10: Delete the smoke-test issue**
+- [x] **Step 10: Delete the smoke-test issue**
 
 Capture the issue number from Step 9 (last segment of the printed URL), then run:
 ```bash
@@ -479,11 +479,11 @@ A fine-grained PAT is required for the GitHub MCP server. The token grants the M
 
 **Files:** none (PAT is stored only in the local Claude Code MCP config in Task 8).
 
-- [ ] **Step 1: Open the fine-grained PAT creation page**
+- [x] **Step 1: Open the fine-grained PAT creation page**
 
 Browse to: `https://github.com/settings/personal-access-tokens/new`
 
-- [ ] **Step 2: Fill the token form**
+- [x] **Step 2: Fill the token form**
 
 | Field | Value |
 |-------|-------|
@@ -508,11 +508,11 @@ Account permissions:
 |------------|--------|
 | Projects (Classic & v2) | Read and write |
 
-- [ ] **Step 3: Generate and copy the token**
+- [x] **Step 3: Generate and copy the token**
 
 Click **Generate token** at the bottom. Copy the value (begins with `github_pat_`). It is shown once only.
 
-- [ ] **Step 4: Save the token to a temporary local env file (do NOT commit)**
+- [x] **Step 4: Save the token to a temporary local env file (do NOT commit)**
 
 Run (replace `<paste-pat-here>`):
 ```bash
@@ -521,7 +521,7 @@ chmod 600 /home/oospina/.config/saas-planner-mcp.env
 ```
 Expected: file exists with mode `-rw-------`.
 
-- [ ] **Step 5: Verify the token works against the GitHub API**
+- [x] **Step 5: Verify the token works against the GitHub API**
 
 Run:
 ```bash
@@ -586,7 +586,7 @@ The spec's six-step validation is adapted to use `gh` instead of MCP tool calls,
 
 **Files:** none (tests only).
 
-- [ ] **Step 1: `gh` is authenticated**
+- [x] **Step 1: `gh` is authenticated**
 
 Run:
 ```bash
@@ -594,12 +594,12 @@ gh repo list oscar-ospina --limit 10
 ```
 Expected: list contains `oscar-ospina/saas-planner`.
 
-- [ ] **Step 2: Templates load**
+- [x] **Step 2: Templates load**
 
 Open `https://github.com/oscar-ospina/saas-planner/issues/new/choose` in a browser.
 Expected: **Epic** and **User Story** cards are visible; no blank-issue option.
 
-- [ ] **Step 3: Create a test epic via `gh`**
+- [x] **Step 3: Create a test epic via `gh`**
 
 Run:
 ```bash
@@ -620,7 +620,7 @@ EOF
 ```
 Expected: prints the new issue URL (record the number as `<epic-number>`). The issue should auto-add to the Project; if it does not, add manually with `gh project item-add 1 --owner oscar-ospina --url <url>`.
 
-- [ ] **Step 4: Create a sub-issue story via `gh` and link it to the epic**
+- [x] **Step 4: Create a sub-issue story via `gh` and link it to the epic**
 
 Run (replace `<epic-number>`):
 ```bash
@@ -649,7 +649,7 @@ gh api -X POST /repos/oscar-ospina/saas-planner/issues/<epic-number>/sub_issues 
 ```
 Expected: returns JSON with the sub-issue relationship; the GitHub UI shows the story nested under the epic in the **Sub-issues** section.
 
-- [ ] **Step 5: Close via PR**
+- [x] **Step 5: Close via PR**
 
 Run locally:
 ```bash
@@ -665,7 +665,7 @@ gh pr merge --repo oscar-ospina/saas-planner --squash --delete-branch
 ```
 Replace `<story-number>` with the number from Step 4. Expected: PR merges; the validation story moves to **Done** in the project; the issue is closed automatically.
 
-- [ ] **Step 6: Cleanup**
+- [x] **Step 6: Cleanup**
 
 Run:
 ```bash
@@ -679,7 +679,7 @@ git push origin main
 ```
 Expected: both issues deleted, `VALIDATION.md` removed from main.
 
-- [ ] **Step 7: Final commit of plan + spec state**
+- [x] **Step 7: Final commit of plan + spec state**
 
 Run:
 ```bash
@@ -704,3 +704,27 @@ All of the following are true:
 ## Out of scope
 
 Anything in the spec's "Out of scope" section: CI/CD beyond defaults, external integrations, dashboards, monorepo structure, fine-grained Project roles. Future specs only.
+
+---
+
+## EXECUTED 2026-05-12
+
+Tasks 1–7, 9, 10 ran to completion. Task 8 (install GitHub MCP server) was skipped after a mid-execution review concluded `gh` CLI already covered the workflow at lower operational cost; the fine-grained PAT and `~/.config/saas-planner-mcp.env` are kept dormant. A new Task 10 was added to commit `CLAUDE.md` with the `gh`-only convention.
+
+**Adjustments made vs. the original plan:**
+
+- Local repo lives in subfolder `/home/oospina/code/saas/saas-planner/`, not at `/home/oospina/code/saas/` directly (chosen during Task 3 to keep `~/code/saas/` as a parent for future projects).
+- Task 8 marked SKIPPED in place; the original install steps are preserved for reference if the decision is ever revisited.
+- Task 9 reworked to use `gh` CLI and the GitHub sub-issues REST endpoint (`POST /repos/{owner}/{repo}/issues/{number}/sub_issues`) instead of MCP tool calls.
+
+**Known caveat to revisit:** during the smoke test in Task 6 the Project v2 "Auto-add to project" workflow did not pick up the new issue automatically — the issue had to be added manually with `gh project item-add`. The toggle in `https://github.com/users/oscar-ospina/projects/1/workflows` should be verified before relying on auto-add for real stories.
+
+**Done criteria status (revised — MCP-related criteria deliberately not met):**
+
+- `gh --version` ≥ 2.40.0 — met (2.92.0 installed)
+- `oscar-ospina/saas-planner` exists, public, with templates pushed to `main` — met
+- 10 labels exist on the repo — met
+- Project v2 "Saas Planner Roadmap" with custom fields — met for `Priority`, `Size` (XS/S/M/L), `Type`; `Sprint` iteration field, the three custom views, and the auto-add workflow are user-managed in the UI and pending verification
+- PAT lives in `~/.config/saas-planner-mcp.env` and authenticates against the API — met (dormant)
+- `claude mcp list` shows `github` — N/A (MCP not installed by design)
+- End-to-end validation passes via `gh` — met (epic + sub-story + PR with `Closes #N` + auto-close + cleanup all worked)
