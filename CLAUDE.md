@@ -6,6 +6,29 @@ If a task asks you to write product code, the work belongs in the relevant sibli
 
 All issues, sub-issues, projects, PRs, and labels for planning are managed on GitHub.
 
+## Current state (read before reasoning about the design system)
+
+Active epic: **[#5 Establish the design system foundation](https://github.com/oscar-ospina/saas-planner/issues/5)**. Both blocking spikes (`#6` stack, `#7` token pipeline) are **closed with ADRs**. Read those before proposing changes — they answer the load-bearing questions and the decisions are not open for re-litigation in a fresh session:
+
+- [`docs/superpowers/specs/2026-05-27-ds-stack-decision.md`](docs/superpowers/specs/2026-05-27-ds-stack-decision.md) — Tailwind v4 + Radix + shadcn sources, bundled as `@saas/ui`; consumer wiring via `@source` directive + `@import "@saas/ui/theme.css"`; shadcn-source copy strategy; Playwright visual regression replaces Code Connect.
+- [`docs/superpowers/specs/2026-05-27-ds-tokens-pipeline.md`](docs/superpowers/specs/2026-05-27-ds-tokens-pipeline.md) — Custom transformer over the Figma file tree → W3C DTCG `tokens.json` + Tailwind v4 `theme.css`; DTCG → Tailwind v4 namespace mapping rules per category; Style Dictionary evaluated and deferred. Transformer source is inlined in the ADR (the executable ships with `packages/ui`, not here).
+
+PoC outputs from the token spike (real end-to-end run): [`docs/superpowers/plans/2026-05-27-ds-tokens-poc/`](docs/superpowers/plans/2026-05-27-ds-tokens-poc/).
+
+**Next planned story:** `Bootstrap packages/ui` (not yet opened — open it under epic #5 when the user is ready). It scaffolds the future sibling repo using both ADRs as input.
+
+## Figma access (for design system work)
+
+Design source of truth: **`UI-Exercise`** (key `i4WmV5Gfk9uivVQXC5NY8j`, [figma.com/design/i4WmV5Gfk9uivVQXC5NY8j](https://www.figma.com/design/i4WmV5Gfk9uivVQXC5NY8j)).
+
+The **Framelink Figma MCP** is configured at user scope, so the tools `mcp__figma__get_figma_data` and `mcp__figma__download_figma_images` are available in any Claude Code session run from this user account (after a session restart if just installed).
+
+API endpoint constraints (relevant if reasoning about Figma data sources):
+
+- `/v1/files/:key` — works with `file_content:read`. The canonical path; used by the MCP under the hood. Returns the document tree plus `file.styles` for naming local styles.
+- `/v1/files/:key/styles` — works with `library_content:read`. Returns only library-**published** styles. `UI-Exercise` has 0 published / 93 local, so this endpoint is empty for our case.
+- `/v1/files/:key/variables/local` — requires **Enterprise plan** *and* `file_variables:read` scope. Double-blocked. Do not propose native-Variables-based pipelines unless the plan changes.
+
 ## GitHub tooling: use `gh` CLI
 
 Use the `gh` CLI for all GitHub operations: creating issues, reading acceptance criteria, opening PRs, managing the Project v2 board, labels, releases, and admin tasks. The official GitHub MCP server was evaluated and not installed for this project — `gh` covers the workflow at lower operational cost.

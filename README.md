@@ -42,6 +42,17 @@ gh issue create --repo oscar-ospina/saas-planner --web
 
 When working from Claude Code, also see `CLAUDE.md` in this repo for the conventions Claude follows (gh-only, AC format, sub-issue linking, cross-repo `Closes` syntax).
 
+## Active work
+
+**[Epic #5 — Establish the design system foundation](https://github.com/oscar-ospina/saas-planner/issues/5)** is the open initiative as of 2026-05-27. Both blocking spikes are closed with ADRs:
+
+- **Stack** ([ADR](docs/superpowers/specs/2026-05-27-ds-stack-decision.md), [spike #6](https://github.com/oscar-ospina/saas-planner/issues/6)) — Tailwind v4 + Radix + shadcn sources, bundled as `@saas/ui`. Visual regression via Playwright (no Figma Dev seat, so Code Connect is not in scope).
+- **Token pipeline** ([ADR](docs/superpowers/specs/2026-05-27-ds-tokens-pipeline.md), [spike #7](https://github.com/oscar-ospina/saas-planner/issues/7), [PoC](docs/superpowers/plans/2026-05-27-ds-tokens-poc/)) — custom transformer that walks the Figma file tree and emits a W3C DTCG `tokens.json` + Tailwind v4 `theme.css`. PoC ran end-to-end against `UI-Exercise` (88 of 93 local styles extracted).
+
+Next planned story: **Bootstrap `packages/ui`** (sibling repo, not yet created). It scaffolds the package, copies shadcn component sources, and ships the executable transformer (the token-pipeline ADR has it inlined as documentation).
+
+Design source of truth: Figma file **`UI-Exercise`** (`figma.com/design/i4WmV5Gfk9uivVQXC5NY8j`), accessed via the Framelink Figma MCP from any Claude Code session.
+
 ## Conventions at a glance
 
 - Hierarchy: **Epic → Story** via native GitHub sub-issues
