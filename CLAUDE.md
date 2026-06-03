@@ -15,13 +15,21 @@ Active epic: **[#5 Establish the design system foundation](https://github.com/os
 
 PoC outputs from the token spike (real end-to-end run): [`docs/superpowers/plans/2026-05-27-ds-tokens-poc/`](docs/superpowers/plans/2026-05-27-ds-tokens-poc/).
 
-**Next planned story:** `Bootstrap packages/ui` (not yet opened — open it under epic #5 when the user is ready). It scaffolds the future sibling repo using both ADRs as input.
+**Current status (epic #5 is well underway):** the sibling repo `@saas/ui` exists and is public at [oscar-ospina/saas-packages](https://github.com/oscar-ospina/saas-packages) — 10 primitives, Storybook (deployed), Playwright VR, example app, real-Figma token parity + Button parity + fonts, and a keyboard + axe **WCAG 2.2 AA** E2E gate (per PR) are all merged. CI / Release / Pages green.
+
+**Resume here next session (open items):**
+
+1. **Dark mode — [story #13](https://github.com/oscar-ospina/saas-planner/issues/13)** (ready/high). ⚠️ **BLOCKED** on a Figma API 429 (starter tier, ~55 h `Retry-After` hit 2026-06-02, resets ~06-05). The dark palette is **not cached** — pull fresh when access returns; AC forbids eyeballing. **Decision: wait for the pipeline, no hand-transcription.** Then: `nodeId` fetch → commit snapshot → extend `build-palette.mjs` → `@theme inline` + `.dark{}` → dark contrast audit → dark VR baselines.
+2. **Component ↔ Figma parity** for the other 9 primitives (only Button piloted) — needs Figma.
+3. **npm publish** — needs the `@saas` npm scope owned (unclaimed) + `NPM_TOKEN` secret; Release workflow is ready and token-gated.
 
 ## Figma access (for design system work)
 
 Design source of truth: **`UI-Exercise`** (key `i4WmV5Gfk9uivVQXC5NY8j`, [figma.com/design/i4WmV5Gfk9uivVQXC5NY8j](https://www.figma.com/design/i4WmV5Gfk9uivVQXC5NY8j)).
 
 The **Framelink Figma MCP** is configured at user scope, so the tools `mcp__figma__get_figma_data` and `mcp__figma__download_figma_images` are available in any Claude Code session run from this user account (after a session restart if just installed).
+
+⚠️ **Harsh rate limit (starter/Viewer tier).** A whole-file pull with `depth` plus one extra `nodeId` fetch was enough to trip **HTTP 429 with a ~55 h `Retry-After`** (2026-06-02). Budget Figma calls: use **targeted `nodeId` fetches only** (never whole-file or `depth` dumps), and **commit each pull as a snapshot** in the consuming repo (pattern: `saas-packages/ui/tokens/figma-all-palettes.yaml`) so it's never re-fetched. This will recur across the rest of epic #5 (dark mode + the other primitives' parity both need Figma).
 
 API endpoint constraints (relevant if reasoning about Figma data sources):
 

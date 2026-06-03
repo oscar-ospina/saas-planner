@@ -44,14 +44,22 @@ When working from Claude Code, also see `CLAUDE.md` in this repo for the convent
 
 ## Active work
 
-**[Epic #5 — Establish the design system foundation](https://github.com/oscar-ospina/saas-planner/issues/5)** is the open initiative as of 2026-05-27. Both blocking spikes are closed with ADRs:
+**[Epic #5 — Establish the design system foundation](https://github.com/oscar-ospina/saas-planner/issues/5)** is **in progress** (open since 2026-05-27). The sibling code repo it produces, **`@saas/ui`**, now exists and is public at **[oscar-ospina/saas-packages](https://github.com/oscar-ospina/saas-packages)** — Storybook deployed, CI / Release / Pages green.
+
+Both blocking spikes are closed with ADRs:
 
 - **Stack** ([ADR](docs/superpowers/specs/2026-05-27-ds-stack-decision.md), [spike #6](https://github.com/oscar-ospina/saas-planner/issues/6)) — Tailwind v4 + Radix + shadcn sources, bundled as `@saas/ui`. Visual regression via Playwright (no Figma Dev seat, so Code Connect is not in scope).
 - **Token pipeline** ([ADR](docs/superpowers/specs/2026-05-27-ds-tokens-pipeline.md), [spike #7](https://github.com/oscar-ospina/saas-planner/issues/7), [PoC](docs/superpowers/plans/2026-05-27-ds-tokens-poc/)) — custom transformer that walks the Figma file tree and emits a W3C DTCG `tokens.json` + Tailwind v4 `theme.css`. PoC ran end-to-end against `UI-Exercise` (88 of 93 local styles extracted).
 
-Next planned story: **Bootstrap `packages/ui`** (sibling repo, not yet created). It scaffolds the package, copies shadcn component sources, and ships the executable transformer (the token-pipeline ADR has it inlined as documentation).
+**Done** (epic #5 stories #6–#12, all merged): repo bootstrap with semver/changesets release, v0 token package, Storybook (a11y + interaction), the 10 primitives, an example consumer app, Playwright visual-regression baselines, the real-Figma **token parity** + **Button** component-parity pilot + fonts, and a **keyboard-navigation + axe WCAG 2.2 AA E2E gate** (`ui/tests/e2e/`, runs per PR) — which closes the epic's "keyboard nav not yet E2E-verified" criterion.
 
-Design source of truth: Figma file **`UI-Exercise`** (`figma.com/design/i4WmV5Gfk9uivVQXC5NY8j`), accessed via the Framelink Figma MCP from any Claude Code session.
+**Open — resume here next session:**
+
+1. **Dark mode — [story #13](https://github.com/oscar-ospina/saas-planner/issues/13)** (ready, high priority). ⚠️ **BLOCKED** on the Figma API rate limit — a 429 with a ~55 h `Retry-After` hit 2026-06-02 (starter/Viewer tier), resetting **~2026-06-05**. The dark palette is **not cached** and must be pulled fresh; the story's AC forbids eyeballing. **Decision: wait for the token pipeline — no hand-transcription.** When access returns: targeted `nodeId` fetch of the dark palette → commit a snapshot → extend `build-palette.mjs` → restructure `semantic.css` to `@theme inline` + `.dark{}` → dark contrast audit → dark Storybook + VR baselines.
+2. **Component ↔ Figma parity for the other 9 primitives** (only Button is piloted) — also needs Figma.
+3. **Publish to npm** — gated on owning the `@saas` scope on npm (currently unclaimed) **and** adding the `NPM_TOKEN` repo secret; the Release workflow is ready and token-gated.
+
+Design source of truth: Figma file **`UI-Exercise`** (`figma.com/design/i4WmV5Gfk9uivVQXC5NY8j`), via the Framelink Figma MCP. ⚠️ **Figma is on a starter/Viewer tier with a punishing API budget** — use targeted `nodeId` fetches only (never whole-file / `depth` dumps) and commit each pull as a snapshot, or you'll trip a multi-hour 429.
 
 ## Conventions at a glance
 
