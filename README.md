@@ -42,28 +42,32 @@ gh issue create --repo oscar-ospina/saas-planner --web
 
 When working from Claude Code, also see `CLAUDE.md` in this repo for the conventions Claude follows (gh-only, AC format, sub-issue linking, cross-repo `Closes` syntax).
 
-## Active work
+## Status — design system foundation COMPLETE ✅
 
-**[Epic #5 — Establish the design system foundation](https://github.com/oscar-ospina/saas-planner/issues/5)** is **in progress** (open since 2026-05-27). The sibling code repo it produces, **`@saas/ui`**, now exists and is public at **[oscar-ospina/saas-packages](https://github.com/oscar-ospina/saas-packages)** — Storybook deployed, **CI / Release / Pages all green**. (`Release` had been failing because the changesets *Version Packages* PR couldn't be created; fixed 2026-06-03 by enabling the `saas-packages` repo setting **"Allow GitHub Actions to create and approve pull requests"**. The open **PR #2 `chore: version packages`** bumps `@saas/ui` 0.1.0 → 0.1.1 on merge.)
+**[Epic #5 — Establish the design system foundation](https://github.com/oscar-ospina/saas-planner/issues/5)** is **done & closed** (2026-06-04). The sibling code repo **`@saas/ui`** is **published to npm — [`@saas/ui@0.2.0`](https://www.npmjs.com/package/@saas/ui)** (public) at [oscar-ospina/saas-packages](https://github.com/oscar-ospina/saas-packages); Storybook deployed, CI / Release / Pages green. All 9 sub-issues (#6–#15) are closed: the two ADR spikes, the 10 primitives, token + component↔Figma parity, a WCAG 2.2 AA keyboard + axe E2E gate, an example consumer app, Playwright VR, and semver/changesets with publish-on-merge.
+
+The product is now named — **[Alta Vibración](#the-product)** — but the design system stays **brand-agnostic / reusable** (Alta Vibración is the reference brand, not baked in).
 
 Both blocking spikes are closed with ADRs:
 
 - **Stack** ([ADR](docs/superpowers/specs/2026-05-27-ds-stack-decision.md), [spike #6](https://github.com/oscar-ospina/saas-planner/issues/6)) — Tailwind v4 + Radix + shadcn sources, bundled as `@saas/ui`. Visual regression via Playwright (no Figma Dev seat, so Code Connect is not in scope).
 - **Token pipeline** ([ADR](docs/superpowers/specs/2026-05-27-ds-tokens-pipeline.md), [spike #7](https://github.com/oscar-ospina/saas-planner/issues/7), [PoC](docs/superpowers/plans/2026-05-27-ds-tokens-poc/)) — custom transformer that walks the Figma file tree and emits a W3C DTCG `tokens.json` + Tailwind v4 `theme.css`. PoC ran end-to-end against `UI-Exercise` (88 of 93 local styles extracted).
 
-**Done** (epic #5 stories #6–#12, all merged): repo bootstrap with semver/changesets release, v0 token package, Storybook (a11y + interaction), the 10 primitives, an example consumer app, Playwright visual-regression baselines, the real-Figma **token parity** + **Button** component-parity pilot + fonts, and a **keyboard-navigation + axe WCAG 2.2 AA E2E gate** (`ui/tests/e2e/`, runs per PR) — which closes the epic's "keyboard nav not yet E2E-verified" criterion.
+## Next
 
-**Open — resume here next session:**
+The foundation is shipped; the next track is the **product surface**:
 
-_Recently done (2026-06-03/04):_ fixed the red `Release` workflow (enabled the `saas-packages` *Allow GitHub Actions to create and approve pull requests* setting); filed + linked stories #14/#15 under epic #5; **published `@saas/ui@0.1.1` to npm** — public, clean-room `npm install` verified, GitHub Release cut, publish-on-merge now wired ([story #15](https://github.com/oscar-ospina/saas-planner/issues/15) closed). _(Token note: `NPM_TOKEN` must be a classic **Automation** token — a non-2FA-bypass token gets `E403` from `changeset publish`.)_
+1. **Alta Vibración consumer app** — a new sibling repo (+ new epic) that **imports `@saas/ui`** and adds the brand layer (logo, copy, imagery, the *Home → Agenda → Pago* screens) on top of the brand-agnostic DS. Since the product is no longer TBD, this is where `/gsd:new-project` kicks in. The **Claude Design bundle** (see [Design sources](#design-sources)) already ships clickable UI kits for these screens + the full brand guide to build from.
+2. **Backlog — future theming epic** (no product driver yet): dark mode ([#13](https://github.com/oscar-ospina/saas-planner/issues/13) — decide the source: add `Dark/*` to Figma, or derive in code), AA-safe status-badge tints, tightening the full-page VR to catch component-level deltas, a motion system, and data-display components (Table, Charts).
 
-**Deferred — [story #13](https://github.com/oscar-ospina/saas-planner/issues/13) (dark mode):** the `UI-Exercise` Figma file has **no dark palette** (confirmed 2026-06-04; the earlier "exists at `_Swatch/Light and Dark`" note was an unverified assumption — the cached snapshot is light-only). The real blocker was never the 429 — the source doesn't exist. Dark mode moves to a **future theming epic** (matches epic #5's own Notes) and is **unlinked from #5**; revisit by either adding `Dark/*` swatches to Figma (extract faithfully) or deriving a dark theme in code (then rewrite the AC).
+## The product
 
-**One open item — blocked on Figma** (429 resets **~2026-06-05**):
+**Alta Vibración** — the online numerology practice of consultant **Liliana Tobón**. Spanish (Colombia): a marketing site where visitors learn numerology, book a consultation (*"Cita"*), pick a date/time, and pay (COP — card / PSE / Nequi). Tagline: *"No es casualidad. Es vibración."* Brand: cosmic & warm — orange `#f37d3e` + violet `#7f5af8`, Archivo + Open Sans, generous rounding. `@saas/ui` encodes the **brand-agnostic foundations**; product-specific surfaces live in the consumer app.
 
-1. **Component ↔ Figma parity for the other 9 primitives — [story #14](https://github.com/oscar-ospina/saas-planner/issues/14)** (only Button is piloted) — needs targeted `nodeId` Figma fetches once the rate limit clears.
+## Design sources
 
-Design source of truth: Figma file **`UI-Exercise`** (`figma.com/design/i4WmV5Gfk9uivVQXC5NY8j`), via the Framelink Figma MCP. ⚠️ **Figma is on a starter/Viewer tier with a punishing API budget** — use targeted `nodeId` fetches only (never whole-file / `depth` dumps) and commit each pull as a snapshot, or you'll trip a multi-hour 429.
+- **Figma — `UI-Exercise`** (`figma.com/design/i4WmV5Gfk9uivVQXC5NY8j`), via the Framelink Figma MCP. ⚠️ Starter/Viewer tier with a **harsh API rate limit** — targeted `nodeId` fetches only (never whole-file / `depth` dumps), commit each pull as a snapshot, or you trip a multi-hour 429. The file has **no dark palette** (confirmed) — don't plan dark-mode extraction against it.
+- **Claude Design bundle** — the highest-leverage design source. A handoff generated from the same `.fig` (+ this DS repo) at [claude.ai/design](https://claude.ai/design): a brand guide, `colors_and_type.css` tokens, component **specimen cards** (`preview/comp-*.html`), and clickable UI kits (*Home → Agenda → Pago*). The #14 component-parity audit used these specimens — **no Figma API needed**. See [CLAUDE.md → Claude Design access](CLAUDE.md#claude-design-access) for how to fetch it.
 
 ## Conventions at a glance
 
