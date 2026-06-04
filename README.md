@@ -55,16 +55,12 @@ Both blocking spikes are closed with ADRs:
 
 **Open — resume here next session:**
 
-_Recently done (2026-06-03):_ fixed the red `Release` workflow (enabled the `saas-packages` *Allow GitHub Actions to create and approve pull requests* setting → Release green, **Version Packages PR #2** `0.1.0 → 0.1.1` now open); filed + linked stories #14 and #15 under epic #5.
+_Recently done (2026-06-03/04):_ fixed the red `Release` workflow (enabled the `saas-packages` *Allow GitHub Actions to create and approve pull requests* setting); filed + linked stories #14/#15 under epic #5; **published `@saas/ui@0.1.1` to npm** — public, clean-room `npm install` verified, GitHub Release cut, publish-on-merge now wired ([story #15](https://github.com/oscar-ospina/saas-planner/issues/15) closed). _(Token note: `NPM_TOKEN` must be a classic **Automation** token — a non-2FA-bypass token gets `E403` from `changeset publish`.)_
 
-_Unblocked now (no Figma needed):_
+**All remaining open work is blocked on Figma** (429 resets **~2026-06-05**):
 
-1. **Publish to npm — [story #15](https://github.com/oscar-ospina/saas-planner/issues/15).** Gated on owning the `@saas` scope on npm (currently unclaimed, `npm view @saas/ui` → 404) **and** adding the `NPM_TOKEN` repo secret; the Release workflow is ready and token-gated — once the secret is set, merging the Version Packages PR publishes automatically. Independent of Figma.
-
-_Blocked on Figma (429 resets ~2026-06-05):_
-
-2. **Dark mode — [story #13](https://github.com/oscar-ospina/saas-planner/issues/13)** (ready, high priority). ⚠️ **BLOCKED** on the Figma API rate limit — a 429 with a ~55 h `Retry-After` hit 2026-06-02 (starter/Viewer tier), resetting **~2026-06-05**. The dark palette is **not cached** (verified: `ui/tokens/figma-all-palettes.yaml` holds only the light "All palettes" frame) and must be pulled fresh; the story's AC forbids eyeballing. **Decision: wait for the token pipeline — no hand-transcription.** When access returns: targeted `nodeId` fetch of the dark palette → commit a snapshot → extend `build-palette.mjs` → restructure `semantic.css` to `@theme inline` + `.dark{}` → dark contrast audit → dark Storybook + VR baselines.
-3. **Component ↔ Figma parity for the other 9 primitives — [story #14](https://github.com/oscar-ospina/saas-planner/issues/14)** (only Button is piloted) — also needs Figma.
+1. **Dark mode — [story #13](https://github.com/oscar-ospina/saas-planner/issues/13)** (ready, high priority). ⚠️ **BLOCKED** on the Figma API rate limit — a 429 with a ~55 h `Retry-After` hit 2026-06-02 (starter/Viewer tier), resetting **~2026-06-05**. The dark palette is **not cached** (verified: `ui/tokens/figma-all-palettes.yaml` holds only the light "All palettes" frame) and must be pulled fresh; the story's AC forbids eyeballing. **Decision: wait for the token pipeline — no hand-transcription.** When access returns: targeted `nodeId` fetch of the dark palette → commit a snapshot → extend `build-palette.mjs` → restructure `semantic.css` to `@theme inline` + `.dark{}` → dark contrast audit → dark Storybook + VR baselines.
+2. **Component ↔ Figma parity for the other 9 primitives — [story #14](https://github.com/oscar-ospina/saas-planner/issues/14)** (only Button is piloted) — also needs Figma.
 
 Design source of truth: Figma file **`UI-Exercise`** (`figma.com/design/i4WmV5Gfk9uivVQXC5NY8j`), via the Framelink Figma MCP. ⚠️ **Figma is on a starter/Viewer tier with a punishing API budget** — use targeted `nodeId` fetches only (never whole-file / `depth` dumps) and commit each pull as a snapshot, or you'll trip a multi-hour 429.
 
