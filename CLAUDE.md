@@ -21,10 +21,11 @@ PoC outputs from the token spike (real end-to-end run): [`docs/superpowers/plans
 
 _Recently done (2026-06-03/04):_ fixed the red `Release` workflow (PR-creation setting); filed + linked stories #14/#15 (and the previously-unlinked #13) under epic #5; **published `@saas/ui@0.1.1` to npm** (public, clean-install verified, publish-on-merge wired, [#15](https://github.com/oscar-ospina/saas-planner/issues/15) closed). _Token note: `NPM_TOKEN` must be a classic **Automation** token — a non-2FA-bypass token gets `E403` from `changeset publish`._
 
-**All remaining open work is blocked on Figma** (429 resets ~2026-06-05):
+**Deferred — [story #13](https://github.com/oscar-ospina/saas-planner/issues/13) (dark mode):** the `UI-Exercise` Figma file has **no dark palette** (confirmed 2026-06-04; the "_Swatch/Light and Dark exists" claim was an unverified assumption — the cached snapshot is light-only). The blocker was never the 429; the source doesn't exist. Moved to a **future theming epic** (per epic #5's Notes), **unlinked from #5**, relabeled `priority:low`. Revisit by either adding `Dark/*` swatches to Figma (faithful extract) or deriving a dark theme in code (rewrite the AC). **Do not re-add a `_Swatch/Light and Dark` extraction task without verifying the frame exists first.**
 
-1. **Dark mode — [story #13](https://github.com/oscar-ospina/saas-planner/issues/13)** (ready/high). ⚠️ **BLOCKED** on a Figma API 429 (starter tier, ~55 h `Retry-After` hit 2026-06-02, resets ~06-05). The dark palette is **not cached** — pull fresh when access returns; AC forbids eyeballing. **Decision: wait for the pipeline, no hand-transcription.** Then: `nodeId` fetch → commit snapshot → extend `build-palette.mjs` → `@theme inline` + `.dark{}` → dark contrast audit → dark VR baselines.
-2. **Component ↔ Figma parity — [story #14](https://github.com/oscar-ospina/saas-planner/issues/14)** for the other 9 primitives (only Button piloted) — needs Figma.
+**One open item — blocked on Figma** (429 resets ~2026-06-05):
+
+1. **Component ↔ Figma parity — [story #14](https://github.com/oscar-ospina/saas-planner/issues/14)** for the other 9 primitives (only Button piloted) — needs targeted `nodeId` fetches once the rate limit clears.
 
 ## Figma access (for design system work)
 
