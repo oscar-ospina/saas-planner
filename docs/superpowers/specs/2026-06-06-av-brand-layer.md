@@ -39,6 +39,23 @@ The stack ADR ([#6](2026-05-27-ds-stack-decision.md), §"Theme composition and o
 - **B has no driver** (no second brand) and would churn the just-shipped `0.2.0`: re-baselining the Playwright VR snapshots and a semver bump, for zero present value → YAGNI.
 - Because components already use **semantic roles**, B stays a clean, *additive* change whenever it's actually needed (introduce neutral defaults + AV as a named theme) **without touching component source**. Deferring costs nothing structurally.
 
+## Validation & finding (2026-06-06)
+
+To pressure-test the "agnostic in structure" claim, an invented second brand **"Aurora"** (cool teal + slate, sharper radius) was applied to the real primitives via a `.theme-aurora` scope that overrides **only** the semantic-role variables — see `saas-packages/ui/src/themes/aurora.css` + the `Foundations/Theming` Storybook story (dev-only; not shipped). A screenshot of the three-column proof (AV / Aurora-roles-only / Aurora-roles+patch) confirms the behavior visually.
+
+**Result:** every primitive re-skins from warm AV to cool Aurora with zero component edits — **except Button.** A `grep` of `src/components/*.tsx` confirmed Button is the *only* component reaching past its roles into raw ramp tokens:
+
+- `outline` / `ghost`: `text-orange-900`
+- `link`: `text-orange-700`
+- `default`: `hover:bg-orange-200`
+- `outline`: `hover:border-neutral-300`
+
+A role-only theme therefore leaves those Button variants warm (the middle column of the proof). Overriding the four raw tokens too (`.theme-aurora-complete`) yields a complete re-skin (right column).
+
+**Conclusion:** the agnostic-in-structure claim holds for **all primitives except Button.** This is invisible for Alta Vibración (AV *is* the warm brand), so it does not change the thin-layer decision — but it is a real gap for any second brand.
+
+**Follow-up (saas-packages story, no driver yet):** give Button a semantic role for emphasis/link text (e.g. `link` → `--color-primary`/a new emphasis role; `outline`/`ghost` text → a role rather than `orange-900`) so a brand theme re-skins it through roles alone. Until then, a second brand's theme must also override `--color-orange-{200,700,900}` + `--color-neutral-300` (as `.theme-aurora-complete` demonstrates).
+
 ## Consequences
 
 - Scopes story [#20](https://github.com/oscar-ospina/saas-planner/issues/20) (Brand theme layer) to: self-host Archivo + Open Sans and wire them to `--font-display` / `--font-sans`; ship the `logo-horizontal.svg` / `logo-mark.svg` lockups; build brand component compositions in the app. No `@saas/ui` change required.
