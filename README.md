@@ -55,10 +55,11 @@ Both blocking spikes are closed with ADRs:
 
 ## Next
 
-The foundation is shipped; the next track is the **product surface**:
+The DS foundation is shipped; the product surface is now in flight:
 
-1. **Alta Vibración consumer app** — a new sibling repo (+ new epic) that **imports `@saas/ui`** and adds the brand layer (logo, copy, imagery, the *Home → Agenda → Pago* screens) on top of the brand-agnostic DS. Since the product is no longer TBD, this is where `/gsd:new-project` kicks in. The **Claude Design bundle** (see [Design sources](#design-sources)) already ships clickable UI kits for these screens + the full brand guide to build from.
-2. **Backlog — future theming epic** (no product driver yet): dark mode ([#13](https://github.com/oscar-ospina/saas-planner/issues/13) — decide the source: add `Dark/*` to Figma, or derive in code), AA-safe status-badge tints, tightening the full-page VR to catch component-level deltas, a motion system, and data-display components (Table, Charts).
+1. **Alta Vibración consumer app — marketing landing (MVP).** [Epic #16](https://github.com/oscar-ospina/saas-planner/issues/16) is filed and on the board (sub-issues #17–#26): a new sibling repo that **imports `@saas/ui`** and adds the brand layer (logo, copy, imagery) on top of the brand-agnostic DS, starting with the **Home** marketing landing that converts via **WhatsApp/contact**. Planned **in this gh planner** (Epic → Story), *not* via `/gsd:new-project` — we keep the established Issues/Projects workflow as the system of record. Two spikes unblock it, each with an ADR in [`docs/superpowers/specs/`](docs/superpowers/specs/): [#17](https://github.com/oscar-ospina/saas-planner/issues/17) framework (Next.js vs SPA) and [#18](https://github.com/oscar-ospina/saas-planner/issues/18) the `@saas/ui` brand layer. The **Claude Design bundle** (see [Design sources](#design-sources)) ships clickable UI kits for the screens + the full brand guide to build from.
+2. **Deferred — booking & checkout epic** (follow-up to #16, not yet filed): the real in-app *Agenda* (availability backend, calendar, slot hold) and *Pago* (payment gateway for card/PSE/Nequi, server-verified webhooks, email/reminders, DIAN invoicing). This makes the app **full-stack** (activates a future `api/` sibling); the marketing MVP routes booking intent to WhatsApp until it lands.
+3. **Backlog — future theming epic** (no product driver yet): dark mode ([#13](https://github.com/oscar-ospina/saas-planner/issues/13) — decide the source: add `Dark/*` to Figma, or derive in code), AA-safe status-badge tints, tightening the full-page VR to catch component-level deltas, a motion system, and data-display components (Table, Charts).
 
 ## The product
 
