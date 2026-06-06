@@ -8,16 +8,29 @@ All issues, sub-issues, projects, PRs, and labels for planning are managed on Gi
 
 ## Current state (read before reasoning about the design system)
 
-Active epic: **[#5 Establish the design system foundation](https://github.com/oscar-ospina/saas-planner/issues/5)**. Both blocking spikes (`#6` stack, `#7` token pipeline) are **closed with ADRs**. Read those before proposing changes — they answer the load-bearing questions and the decisions are not open for re-litigation in a fresh session:
+The **design system** epic ([#5](https://github.com/oscar-ospina/saas-planner/issues/5)) is **complete**; the **active epic is the consumer app** ([#16](https://github.com/oscar-ospina/saas-planner/issues/16), in progress — see "Next" below). Four ADRs are load-bearing and **not open for re-litigation** in a fresh session — read the relevant ones before proposing changes.
+
+**Design-system ADRs** (spikes `#6` stack, `#7` token pipeline):
 
 - [`docs/superpowers/specs/2026-05-27-ds-stack-decision.md`](docs/superpowers/specs/2026-05-27-ds-stack-decision.md) — Tailwind v4 + Radix + shadcn sources, bundled as `@saas/ui`; consumer wiring via `@source` directive + `@import "@saas/ui/theme.css"`; shadcn-source copy strategy; Playwright visual regression replaces Code Connect.
 - [`docs/superpowers/specs/2026-05-27-ds-tokens-pipeline.md`](docs/superpowers/specs/2026-05-27-ds-tokens-pipeline.md) — Custom transformer over the Figma file tree → W3C DTCG `tokens.json` + Tailwind v4 `theme.css`; DTCG → Tailwind v4 namespace mapping rules per category; Style Dictionary evaluated and deferred. Transformer source is inlined in the ADR (the executable ships with `packages/ui`, not here).
 
 PoC outputs from the token spike (real end-to-end run): [`docs/superpowers/plans/2026-05-27-ds-tokens-poc/`](docs/superpowers/plans/2026-05-27-ds-tokens-poc/).
 
+**Consumer-app ADRs** (epic #16 spikes `#17` framework, `#18` brand layer):
+
+- [`docs/superpowers/specs/2026-06-06-av-app-framework.md`](docs/superpowers/specs/2026-06-06-av-app-framework.md) — **Next.js App Router** (static-by-default for SEO; Vite/SPA rejected). Verified `@saas/ui` consumer wiring: `@source` + `@import "@saas/ui/theme.css"`; dist is lowered ESM (**no `transpilePackages`**); peer `tw-animate-css`; **ships no `"use client"`** → Radix Dialog/Select/Toast need a client boundary in the later Agenda/Pago surfaces.
+- [`docs/superpowers/specs/2026-06-06-av-brand-layer.md`](docs/superpowers/specs/2026-06-06-av-brand-layer.md) — **thin brand layer**: the AV app inherits `@saas/ui`'s shipped theme; a neutral-token refactor is deferred (YAGNI, no 2nd brand). The DS is brand-agnostic *in structure* (components use semantic roles) — verified by a second-brand theming proof — **except Button** (reaches raw `orange-*`; follow-up `#27`).
+
 **Current status — epic #5 COMPLETE & closed (2026-06-04):** the sibling repo `@saas/ui` is **published to npm at [`@saas/ui@0.2.0`](https://www.npmjs.com/package/@saas/ui)** (public, [oscar-ospina/saas-packages](https://github.com/oscar-ospina/saas-packages)) — 10 primitives, Storybook (deployed), Playwright VR, example app, token + component↔Figma parity, fonts, and a keyboard + axe **WCAG 2.2 AA** E2E gate (per PR). CI / Release / Pages green; publish-on-merge wired (changesets). All 9 sub-issues (#6–#15) closed.
 
-**Next (the foundation is done) — product surface in flight:** [Epic #16](https://github.com/oscar-ospina/saas-planner/issues/16) (filed 2026-06-06) is the **Alta Vibración consumer app — marketing landing MVP**: a new sibling repo that *imports* `@saas/ui` + adds the brand layer (logo, copy, imagery), starting with the **Home** landing that converts via **WhatsApp/contact**. **Planned in this gh planner (Epic → Story), NOT via `/gsd:new-project`** — the Issues/Projects board is the system of record; do not introduce a parallel `.planning/` setup here. Sub-issues #17–#26; spikes [#17](https://github.com/oscar-ospina/saas-planner/issues/17) (framework — Next.js vs SPA) and [#18](https://github.com/oscar-ospina/saas-planner/issues/18) (`@saas/ui` brand layer) have ADRs in `docs/superpowers/specs/`. Real in-app *Agenda* + *Pago* + backend (availability API, payment gateway card/PSE/Nequi, webhooks, email, DIAN factura) are **deferred to a follow-up booking & checkout epic** — the app is full-stack, activating a future `api/` sibling. The Claude Design bundle (see "Claude Design access" below) ships clickable UI kits + the brand guide.
+**Next — consumer app (epic #16), in progress.** [Epic #16](https://github.com/oscar-ospina/saas-planner/issues/16) is the **Alta Vibración marketing landing MVP**: a sibling repo that *imports* `@saas/ui` + adds the brand layer, starting with the **Home** landing (converts via **WhatsApp/contact**). **Planned in this gh planner (Epic → Story), NOT via `/gsd:new-project`** — the Issues/Projects board is the system of record; do not introduce a parallel `.planning/` setup here.
+
+- **Done (3/11):** spikes [#17](https://github.com/oscar-ospina/saas-planner/issues/17) (Next.js) + [#18](https://github.com/oscar-ospina/saas-planner/issues/18) (thin brand layer) with ADRs (above); story [#19](https://github.com/oscar-ospina/saas-planner/issues/19) scaffold → the app is **live at [alta-vibracion-web](https://github.com/oscar-ospina/alta-vibracion-web)** (Next.js 16 + TS 6 + Tailwind v4 + `@saas/ui@0.2.0`; CI green on `main`).
+- **Remaining:** #20 brand theme (logo) · #21 app shell (routing/TopBar/Footer) · #22 SEO/a11y/responsive · #23 hero + WhatsApp · #24 trust sections · #25 consultations grid · #26 legal pages.
+- **Deferred — booking & checkout epic** (not yet filed): real in-app *Agenda* + *Pago* + backend (availability API, payment gateway card/PSE/Nequi, webhooks, email, DIAN factura) — the app is full-stack, activating a future `api/` sibling; the MVP routes booking to WhatsApp until then.
+
+The Claude Design bundle (see "Claude Design access" below) ships clickable UI kits + the brand guide.
 
 **The product — Alta Vibración:** Liliana Tobón's online numerology practice (Spanish/Colombia): marketing + booking (*"Agenda"*) + checkout (*"Pago"*). Orange `#f37d3e` + violet `#7f5af8`, Archivo + Open Sans. The DS is **brand-agnostic** — the brand layer lives in the consumer app, not in `@saas/ui`. Full detail in the [README](README.md#the-product).
 
