@@ -45,7 +45,8 @@ When working from Claude Code, also see `CLAUDE.md` in this repo for the convent
 ## Status
 
 - ✅ **Design system foundation — complete** (epic #5, 2026-06-04): [`@saas/ui@0.2.0`](https://www.npmjs.com/package/@saas/ui) published to npm.
-- 🚧 **Consumer app MVP — in progress** (epic #16): the [Alta Vibración](#the-product) app repo is **live** at [`alta-vibracion-web`](https://github.com/oscar-ospina/alta-vibracion-web); 3 of 11 sub-issues done. See **[Active work](#active-work--alta-vibración-consumer-app-epic-16)** below.
+- ✅ **Consumer app marketing-landing MVP — complete** (epic #16, closed 2026-06-07): the [Alta Vibración](#the-product) Home landing + legal pages are **live & feature-complete** at [`alta-vibracion-web`](https://github.com/oscar-ospina/alta-vibracion-web) (all 11 sub-issues #17–#26 done; converts via WhatsApp). See **[What shipped](#what-shipped--alta-vibración-consumer-app-epic-16)** below.
+- ⏭️ **Next:** the deferred **booking & checkout** epic (real *Agenda* + *Pago* + backend, activates a future `api/` sibling) — not yet filed.
 
 ### Design system foundation (epic #5) — complete ✅
 
@@ -58,16 +59,16 @@ Both blocking spikes are closed with ADRs:
 - **Stack** ([ADR](docs/superpowers/specs/2026-05-27-ds-stack-decision.md), [spike #6](https://github.com/oscar-ospina/saas-planner/issues/6)) — Tailwind v4 + Radix + shadcn sources, bundled as `@saas/ui`. Visual regression via Playwright (no Figma Dev seat, so Code Connect is not in scope).
 - **Token pipeline** ([ADR](docs/superpowers/specs/2026-05-27-ds-tokens-pipeline.md), [spike #7](https://github.com/oscar-ospina/saas-planner/issues/7), [PoC](docs/superpowers/plans/2026-05-27-ds-tokens-poc/)) — custom transformer that walks the Figma file tree and emits a W3C DTCG `tokens.json` + Tailwind v4 `theme.css`. PoC ran end-to-end against `UI-Exercise` (88 of 93 local styles extracted).
 
-## Active work — Alta Vibración consumer app (epic #16)
+## What shipped — Alta Vibración consumer app (epic #16)
 
-The DS foundation is shipped; the product surface is now being built. **[Epic #16 — Alta Vibración marketing landing (MVP)](https://github.com/oscar-ospina/saas-planner/issues/16)** imports `@saas/ui` and adds the brand layer (logo, copy, imagery) on top of the brand-agnostic DS, starting with the **Home** landing that converts via **WhatsApp/contact**. Planned **in this gh planner** (Epic → Story), *not* via `/gsd:new-project` — the Issues/Projects board stays the system of record. The **Claude Design bundle** (see [Design sources](#design-sources)) ships clickable UI kits + the full brand guide to build from.
+**[Epic #16 — Alta Vibración marketing landing (MVP)](https://github.com/oscar-ospina/saas-planner/issues/16)** is **complete & closed (2026-06-07)** — all 11 sub-issues done. The app imports `@saas/ui` and adds the brand layer (logo, copy, imagery) on top of the brand-agnostic DS; it's **live & feature-complete** at [oscar-ospina/alta-vibracion-web](https://github.com/oscar-ospina/alta-vibracion-web) (Next.js 16 + TS 6 + Tailwind v4 + `@saas/ui@0.2.0`, CI green on `main`). Planned **in this gh planner** (Epic → Story), *not* via `/gsd:new-project`. The **Claude Design bundle** (see [Design sources](#design-sources)) supplied the clickable UI kits + brand guide.
 
-**Progress — 3 of 11 sub-issues done:**
+- **Spikes (ADRs):** [#17](https://github.com/oscar-ospina/saas-planner/issues/17) → **Next.js App Router** ([ADR](docs/superpowers/specs/2026-06-06-av-app-framework.md); Vite/SPA rejected for SEO) · [#18](https://github.com/oscar-ospina/saas-planner/issues/18) → **thin brand layer** ([ADR](docs/superpowers/specs/2026-06-06-av-brand-layer.md); the app inherits the DS theme). The second-brand theming proof confirmed the DS re-skins via semantic roles — except **Button** (follow-up [#27](https://github.com/oscar-ospina/saas-planner/issues/27)).
+- **Stories #19–#26 (all done):** scaffold · brand theme (logo/fonts/tokens) · app shell (routing/TopBar/Footer) · **#22** cross-cutting baseline (SEO sitemap/robots/OG, Vercel Web Analytics + per-CTA conversion events, es-CO, 3px AA focus ring) · hero + WhatsApp FAB · trust sections · consultations grid · **#26** legal pages (Términos/Privacidad/Contacto, es-CO).
+- **Conversion** is WhatsApp click-to-chat throughout; real *Agenda*/*Pago* are the deferred follow-up epic below.
+- **DS follow-ups surfaced** (tracked against `@saas/ui`, separate from #16): [#27](https://github.com/oscar-ospina/saas-planner/issues/27)/[#28](https://github.com/oscar-ospina/saas-planner/issues/28) Button, [#29](https://github.com/oscar-ospina/saas-planner/issues/29) AA-legible green, [#30](https://github.com/oscar-ospina/saas-planner/issues/30) Button focus ring doesn't render in a Tailwind v4 consumer.
 
-- ✅ **[Spike #17 — framework](https://github.com/oscar-ospina/saas-planner/issues/17)** → **Next.js App Router** ([ADR](docs/superpowers/specs/2026-06-06-av-app-framework.md)); a Vite/SPA was rejected for the SEO-critical surface.
-- ✅ **[Spike #18 — `@saas/ui` brand layer](https://github.com/oscar-ospina/saas-planner/issues/18)** → **thin layer** (the app inherits the DS theme; no neutral refactor yet) ([ADR](docs/superpowers/specs/2026-06-06-av-brand-layer.md)). Validated with an invented second-brand theming proof, which confirmed the DS re-skins via semantic-role overrides — and exposed that only **Button** reaches raw palette tokens (follow-up [#27](https://github.com/oscar-ospina/saas-planner/issues/27)).
-- ✅ **[Story #19 — scaffold](https://github.com/oscar-ospina/saas-planner/issues/19)** → the consumer app is **live**: [oscar-ospina/alta-vibracion-web](https://github.com/oscar-ospina/alta-vibracion-web) (Next.js 16 + TypeScript 6 + Tailwind v4 + `@saas/ui@0.2.0`, CI green on `main`).
-- ⬜ **Remaining:** [#20](https://github.com/oscar-ospina/saas-planner/issues/20) brand theme (logo lockups) · [#21](https://github.com/oscar-ospina/saas-planner/issues/21) app shell (routing/TopBar/Footer) · [#22](https://github.com/oscar-ospina/saas-planner/issues/22) SEO/a11y/responsive · [#23](https://github.com/oscar-ospina/saas-planner/issues/23) hero + WhatsApp · [#24](https://github.com/oscar-ospina/saas-planner/issues/24) trust sections · [#25](https://github.com/oscar-ospina/saas-planner/issues/25) consultations grid · [#26](https://github.com/oscar-ospina/saas-planner/issues/26) legal pages.
+**⚠️ Before public launch** (don't block the epic, tracked in the app repo's README): fill the 14 `[POR CONFIRMAR]` legal placeholders + legal review; set the real `resuelv.com` subdomain via `NEXT_PUBLIC_SITE_URL` + deploy on Vercel; add a static OpenGraph image.
 
 ### Deferred & backlog
 
