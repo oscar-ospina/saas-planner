@@ -46,7 +46,8 @@ When working from Claude Code, also see `CLAUDE.md` in this repo for the convent
 
 - ✅ **Design system foundation — complete** (epic #5, 2026-06-04): [`@saas/ui@0.2.0`](https://www.npmjs.com/package/@saas/ui) published to npm.
 - ✅ **Consumer app marketing-landing MVP — complete** (epic #16, closed 2026-06-07): the [Alta Vibración](#the-product) Home landing + legal pages are **live & feature-complete** at [`alta-vibracion-web`](https://github.com/oscar-ospina/alta-vibracion-web) (all 11 sub-issues #17–#26 done; converts via WhatsApp). See **[What shipped](#what-shipped--alta-vibración-consumer-app-epic-16)** below.
-- ⏭️ **Next:** the deferred **booking & checkout** epic (real *Agenda* + *Pago* + backend, activates a future `api/` sibling) — not yet filed.
+- ✅ **Landing visual fidelity to Figma — complete** ([epic #35](https://github.com/oscar-ospina/saas-planner/issues/35), closed 2026-06-07): the Home sections brought to design fidelity against the Figma `UI-Exercise` — assets/SVGs ([#36](https://github.com/oscar-ospina/saas-planner/issues/36)), hero gradient «esencia» + line-art decoration ([#37](https://github.com/oscar-ospina/saas-planner/issues/37)), «¿Por qué Numerología?» bleed cosmic card + line-art faces ([#38](https://github.com/oscar-ospina/saas-planner/issues/38)), «¿Quién es Liliana Tobón?» accordion + floating chips ([#39](https://github.com/oscar-ospina/saas-planner/issues/39)).
+- ▶ **Active — booking & checkout** ([epic #31](https://github.com/oscar-ospina/saas-planner/issues/31)): real in-app *Agenda* — **Phase 1 = booking-only via Google Calendar** (backend = Next.js Route Handlers/Server Actions **in `alta-vibracion-web`**, no `api/` sibling yet); *Pago* = Phase 2. Blocking spikes [#32](https://github.com/oscar-ospina/saas-planner/issues/32) (Google Calendar) + [#33](https://github.com/oscar-ospina/saas-planner/issues/33) (backend/data) come first.
 
 ### Design system foundation (epic #5) — complete ✅
 
@@ -72,7 +73,7 @@ Both blocking spikes are closed with ADRs:
 
 ### Deferred & backlog
 
-- **Booking & checkout epic** (follow-up to #16, not yet filed): the real in-app *Agenda* (availability backend, calendar, slot hold) and *Pago* (payment gateway for card/PSE/Nequi, server-verified webhooks, email/reminders, DIAN invoicing). This makes the app **full-stack** (activates a future `api/` sibling); the MVP routes booking intent to WhatsApp until it lands.
+- **Booking & checkout** — now **filed & active as [epic #31](https://github.com/oscar-ospina/saas-planner/issues/31)** (see Status above). **Phase 1** is booking-only via **Google Calendar**, with the backend as Next.js Route Handlers/Server Actions inside `alta-vibracion-web` (no `api/` sibling yet). **Phase 2** adds *Pago* — payment gateway for card/PSE/Nequi, server-verified webhooks, email/reminders, DIAN invoicing — which is what makes the app full-stack (and would activate a future `api/` sibling). The MVP routes booking intent to WhatsApp until Phase 1 lands.
 - **Future theming epic** (no product driver yet): dark mode ([#13](https://github.com/oscar-ospina/saas-planner/issues/13) — add `Dark/*` to Figma or derive in code), AA-safe status-badge tints, [#27](https://github.com/oscar-ospina/saas-planner/issues/27) (Button → semantic roles for full re-theme), component-level VR, a motion system, and data-display components (Table, Charts).
 
 ## The product
